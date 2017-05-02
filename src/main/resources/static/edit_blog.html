@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="lib/editor/css/wangEditor.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/main.css">
+    <style>
+        .wrap{
+            width: 80%;
+            padding: 30px;
+            margin: 0px auto;
+        }
+        .mtb{
+            margin-top: 20px;
+            margin-bottom:20px ;
+        }
+        .write-content{
+            height: 500px;
+        }
+        .type-radio{
+            margin:10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container wrap">
+
+        <input id="title" placeholder="请输入标题"  class="form-control mtb">
+
+        <div id="articleType" class="mtb">
+            <label>请选择文章类型:</label><button class="btn btn- btn-default" onclick="openAddType()">添加分类</button>
+            <div id="existingTypes">
+            </div>
+        </div>
+
+        <div id="editWrap" class="write-content mtb">
+            <p>请输入内容...</p>
+        </div>
+
+        <button onclick="save()" class="btn btn-success mtb">保存</button>
+
+    </div>
+
+<script src="lib/jquery-1.11.1.js"></script>
+<script src="lib/editor/js/wangEditor.js"></script>
+<script src="lib/layer/layer.js"></script>
+<script type="text/javascript">
+
+    var editor = new wangEditor('editWrap');
+    editor.create();
+    getBlogTypes();
+
+    function save() {
+        $.ajax({
+            url:"/saveBlog",
+            type:"POST",
+            dataType: 'json',
+            data:{
+                title:$("#title").val(),
+                content:editor.$txt.html(),
+                type:$("input:checked").val()
+            },
+            success:function (result) {
+                layer.msg(result.msg);
+            }
+        })
+    }
+
+
+    function getBlogTypes() {
+        $("#existingTypes").empty();
+        $.ajax({
+            url:"/getTypeList",
+            type:"POST",
+            dataType: 'json',
+            success:function (result) {
+                $.each(result.data,function (index,item) {
+                    $("#existingTypes").append('<label class="type-radio"><input name="blogType"  type="radio" value="'+item.id+'" />'+item.remark+' </label>')
+                })
+            }
+        })
+    }
+    
+    function openAddType() {
+        layer.open({
+            type: 1,
+            title: "上传单据",
+            skin: 'layui-layer-demo',
+            area: ['700', '500'], //宽高
+            content:' <div class="wrap" style="text-align: center"> '
+                    +'<input class="form-control" id="blogType"/>'
+                    +'<button class="btn btn-default mtb" onclick="addType()">添加</button>'
+                     + '</div>'
+        });
+    }
+
+    function addType() {
+        $.ajax({
+            url:"/addType",
+            type:"POST",
+            dataType: 'json',
+            data:{
+                remark:$("#blogType").val()
+            },
+            success:function (result) {
+               layer.msg(result.msg);
+               getBlogTypes();
+               layer.closeAll();
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

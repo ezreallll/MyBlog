@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div id="content">
+
+    </div>
+    <script src="lib/jquery-1.11.1.js"></script>
+</body>
+<script>
+    var thisURL = document.URL;
+    var id =thisURL.split('?')[1].split("=")[1];
+
+    $.ajax({
+        url:"/getBlogDetail",
+        dataType: 'json',
+        type:'POST',
+        data:{
+            id:id
+        },
+        success:function (result) {
+            $("#content").append(result.data.content)
+        }
+    })
+
+</script>
+</html>

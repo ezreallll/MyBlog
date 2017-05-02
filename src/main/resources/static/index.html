@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<![endif]-->
+    <title>Nice responsive template for blogger</title>
+    <!-- BOOTSTRAP CORE STYLE -->
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <!-- FONT AWESOME ICON STYLE -->
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <!-- CUSTOM STYLE CSS -->
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="lib/page/page.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="header">
+        <div class="overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 logo-div">
+                        <div class="logo-inner text-center">
+                            <div class="logo-name">
+                                <a href="index.html">
+                                    <img src="img/me.jpg" class="img-circle" />
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-8 header-text-top " id="about">
+                        <a href="edit_blog.html">写博客</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyrights">Collect from <a href="http://www.cssmoban.com/"  title="网站模板">网站模板</a></div>
+    <!--END INFO SECTION-->
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-8 " >
+                <div id="articles">
+
+                </div>
+
+                <nav>
+                    <ul class="page" id="page"></ul>
+                </nav>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3" style="padding-top: 30px;">
+				<div class="row">
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>分类</strong></li>
+                </ul>
+				</div>
+				<div class="row">
+
+
+				</div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!--END HOME PAGE SECTION-->
+    <div class="footer-sec" style="margin-top: 0px;">
+        <div class="container">
+            <div class="row">
+            </div>
+        </div>
+    </div>
+    <!-- END FOOTER SECTION -->
+    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME -->
+    <!-- CORE JQUERY -->
+    <script src="lib/jquery-1.11.1.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="lib/bootstrap.js"></script>
+    <script src="lib/page/page.js"></script>
+
+
+
+    <script>
+
+        var currentPage=1;
+
+        var PageClick = {
+            "click":function(current){
+                currentPage=current;
+            }
+        }
+
+
+        getBlogList();
+
+        function getBlogList(type) {
+           $.ajax({
+               url:"/getBlogList",
+               dataType: 'json',
+               type:'POST',
+               data:{
+                   type:type,
+                   page:currentPage,
+                   size:5
+               },
+               success:function (result) {
+                 initArticle(result.data.items);
+                 $("#page").initPage(result.data.total,currentPage,PageClick.click);
+               }
+           })
+       }
+
+        function initArticle(list) {
+            $("#articles").empty();
+            $.each(list,function (index,item) {
+                $("#articles").append('<div class="blog-post">'
+                        +'<h2>'
+                        +item.title
+                        +'</h2>'
+                        +'<h4> '
+                        +item.create_time
+                        +'</h4>'
+                        +'<p>'
+                        +item.content
+                        +'</p>'
+                        +'<a href="article_detail.html?id='+item.id+'" class="btn btn-default btn-lg ">查看更多<i class="fa fa-angle-right"></i></a>'
+                        +'</div>'
+                )
+            })
+        }
+
+        $.ajax({
+            url:"/getTypeList",
+            dataType: 'json',
+            success:function (result) {
+               $.each(result.data,function (index,item) {
+                   $(".list-group").append('<li class="list-group-item"  onclick="chooseType('+item.id+')">'+item.remark+'</li>')
+               })
+            }
+        })
+
+        function chooseType(type) {
+            getBlogList(type);
+        }
+
+
+
+    </script>
+</body>
+</html>
