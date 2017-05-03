@@ -15,7 +15,7 @@
     <link href="css/font-awesome.css" rel="stylesheet" />
     <!-- CUSTOM STYLE CSS -->
     <link href="css/style.css" rel="stylesheet" />
-    <link href="lib/page/page.css" rel="stylesheet" />
+    <link href="lib/page/jquery.pager.css" rel="stylesheet" />
     <style>
         .content_sample {
             max-height: 140px;
@@ -63,7 +63,7 @@
                 </div>
 
                 <nav style="height: 70px">
-                    <ul class="page" id="page"></ul>
+                    <ul  id="pager"></ul>
                 </nav>
             </div>
             <div class="col-md-1"></div>
@@ -97,7 +97,7 @@
     <script src="lib/jquery-1.11.1.js"></script>
     <!-- BOOTSTRAP SCRIPTS -->
     <script src="lib/bootstrap.js"></script>
-    <script src="lib/page/page.js"></script>
+    <script src="lib/page/jquery.pager.js"></script>
 
 
 
@@ -105,16 +105,19 @@
 
         var currentPage=1;
 
-        var PageClick = {
-            "click":function(current){
-                currentPage=current;
-            }
+        var type=0;
+
+        var totalPage;
+
+        PageClick = function(pageclickednumber) {
+            currentPage=pageclickednumber;
+            getBlogList();
         }
 
 
         getBlogList();
 
-        function getBlogList(type) {
+        function getBlogList() {
            $.ajax({
                url:"/getBlogList",
                dataType: 'json',
@@ -126,10 +129,12 @@
                },
                success:function (result) {
                  initArticle(result.data.items);
-                 $("#page").initPage(result.data.total,currentPage,PageClick.click);
+                 totalPage=Math.ceil(result.data.total/5);
+                 $("#pager").pager({pagenumber: currentPage, pagecount: totalPage, buttonClickCallback: PageClick});
                }
            })
        }
+
 
         function initArticle(list) {
             $("#articles").empty();
@@ -161,7 +166,8 @@
             }
         })
 
-        function chooseType(type) {
+        function chooseType(id) {
+            type=id;
             getBlogList(type);
         }
 
