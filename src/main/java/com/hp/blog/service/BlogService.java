@@ -64,7 +64,6 @@ public class BlogService {
         blogDto.setTitle(title);
         blogDto.setContent(content);
         blogDto.setType(type);
-        blogDto.setCreate_time(String.valueOf(System.currentTimeMillis()/1000));
         blogDao.insert(blogDto);
         return count>0;
     }

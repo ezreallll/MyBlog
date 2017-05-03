@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>我的博客</title>
     <link href="lib/editor/css/wangEditor.css" rel="stylesheet" />
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="css/main.css">
@@ -65,6 +65,9 @@
             },
             success:function (result) {
                 layer.msg(result.msg);
+                if(result.status==1) {
+                    window.location.href = 'index.html'
+                }
             }
         })
     }

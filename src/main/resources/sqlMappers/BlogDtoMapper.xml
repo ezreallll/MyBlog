@@ -11,7 +11,7 @@
 
   <insert id="insert" parameterType="com.hp.blog.entity.BlogDto" >
     insert into blog (title,content, create_time,type)
-    values ( #{title},#{content}, #{create_time},#{type})
+    values ( #{title},#{content}, CURRENT_TIMESTAMP ,#{type})
   </insert>
 
   <select id="selectList" parameterType="java.util.Map" resultMap="BaseResultMap">
