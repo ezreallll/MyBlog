@@ -37,7 +37,6 @@
         </div>
 
         <div id="editWrap" class="write-content mtb">
-            <p>请输入内容...</p>
         </div>
 
         <button onclick="save()" class="btn btn-success mtb">保存</button>
@@ -48,28 +47,54 @@
 <script src="lib/editor/js/wangEditor.js"></script>
 <script src="lib/layer/layer.js"></script>
 <script type="text/javascript">
+    var thisURL = document.URL;
+    if(thisURL.split('?')[1]!=null) {
+        var id = thisURL.split('?')[1].split("=")[1];
+    }
+
 
     var editor = new wangEditor('editWrap');
     editor.create();
     getBlogTypes();
 
     function save() {
-        $.ajax({
-            url:"/saveBlog",
-            type:"POST",
-            dataType: 'json',
-            data:{
-                title:$("#title").val(),
-                content:editor.$txt.html(),
-                type:$("input:checked").val()
-            },
-            success:function (result) {
-                layer.msg(result.msg);
-                if(result.status==1) {
-                    window.location.href = 'index.html'
+        if(id==null){///添加
+            $.ajax({
+                url:"/saveBlog",
+                type:"POST",
+                dataType: 'json',
+                data:{
+                    title:$("#title").val(),
+                    content:editor.$txt.html(),
+                    type:$("input:checked").val()
+                },
+                success:function (result) {
+                    layer.msg(result.msg);
+                    if(result.status==1) {
+                        window.location.href = 'index.html'
+                    }
                 }
-            }
-        })
+            })
+        }else {
+            $.ajax({
+                url:"/editBlog",
+                type:"POST",
+                dataType: 'json',
+                data:{
+                    title:$("#title").val(),
+                    content:editor.$txt.html(),
+                    type:$("input:checked").val(),
+                    id:id
+                },
+                success:function (result) {
+                    layer.msg(result.msg);
+                    if(result.status==1) {
+                        window.location.href ='index.html'
+                    }
+                }
+            })
+        }
+
     }
 
 
@@ -112,6 +137,22 @@
                layer.msg(result.msg);
                getBlogTypes();
                layer.closeAll();
+            }
+        })
+    }
+
+    if(id!=null){
+        $.ajax({
+            url:"/getBlogDetail",
+            dataType: 'json',
+            type:'POST',
+            data:{
+                id:id
+            },
+            success:function (result) {
+                $("#title").val(result.data.title);
+                $(":radio[name='blogType'][value='" + result.data.type + "']").prop("checked", "checked");
+                $("#editWrap").append(result.data.content)
             }
         })
     }

@@ -87,9 +87,13 @@
                    size:5
                },
                success:function (result) {
-                 initArticle(result.data.items);
-                 totalPage=Math.ceil(result.data.total/5);
-                 $("#pager").pager({pagenumber: currentPage, pagecount: totalPage, buttonClickCallback: PageClick});
+                 if(result.data.total!=0) {
+                     initArticle(result.data.items);
+                     totalPage = Math.ceil(result.data.total / 5);
+                     $("#pager").pager({pagenumber: currentPage, pagecount: totalPage, buttonClickCallback: PageClick});
+                 }else {
+                     $("#articles").text("暂无内容。。。")
+                 }
                }
            })
        }
@@ -99,12 +103,12 @@
             $("#articles").empty();
             $.each(list,function (index,item) {
                 $("#articles").append('<div class="blog-post">'
-                        +'<h2>'
+                        +'<h3>'
                         +item.title
-                        +'</h2>'
-                        +'<h4> '
+                        +'</h3>'
+                        +'<h5 style="color: #777"> '
                         +item.create_time
-                        +'</h4>'
+                        +'</h5>'
                         +'<div class="content_sample">'
                         +item.content
                         +'</div>'

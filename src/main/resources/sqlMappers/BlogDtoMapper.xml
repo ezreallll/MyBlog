@@ -11,7 +11,7 @@
 
   <insert id="insert" parameterType="com.hp.blog.entity.BlogDto" >
     insert into blog (title,content, create_time,type)
-    values ( #{title},#{content}, CURRENT_TIMESTAMP ,#{type})
+    values ( #{title},#{content}, CURRENT_TIME ,#{type})
   </insert>
 
   <select id="selectList" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -38,4 +38,7 @@
     SELECT * FROM  blog WHERE  id=#{id};
   </select>
 
+  <select id="updateById"  parameterType="com.hp.blog.entity.BlogDto">
+    UPDATE blog SET title=#{title},content=#{content},type=#{type} WHERE id=#{id}
+  </select>
 </mapper>

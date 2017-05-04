@@ -64,7 +64,21 @@ public class BlogService {
         blogDto.setTitle(title);
         blogDto.setContent(content);
         blogDto.setType(type);
-        blogDao.insert(blogDto);
+        count=blogDao.insert(blogDto);
+        return count>0;
+    }
+
+    public boolean editBlog(String title,String content,int type,int id) throws Exception{
+        int count =0;
+        if(type==0){
+            throw new ServerBizException(ErrorCodeEnum.BLOG_TYPE_ERROR);
+        }
+        BlogDto blogDto=new BlogDto();
+        blogDto.setTitle(title);
+        blogDto.setContent(content);
+        blogDto.setType(type);
+        blogDto.setId(id);
+        count=blogDao.updateById(blogDto);
         return count>0;
     }
 

@@ -1,5 +1,8 @@
 package com.hp.blog.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class BlogDto extends DbBaseObject<Integer>{
 
     private String title;
@@ -27,7 +30,7 @@ public class BlogDto extends DbBaseObject<Integer>{
     }
 
     public String getCreate_time() {
-        return create_time;
+        return create_time.substring(0,create_time.lastIndexOf("."));
     }
 
     public void setCreate_time(String create_time) {

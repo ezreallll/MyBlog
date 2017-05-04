@@ -70,6 +70,20 @@ public class BlogController {
         try {
             blogService.addBlog(title,content,type);
             ResponseUtil.renderSuccessTipJson(response,"保存成功");
+        }catch (ServerBizException e){
+            ResponseUtil.renderFailJson(response, e.getErrCode());
+        } catch (Exception e) {
+            ResponseUtil.renderFailJson(response, ErrorCodeEnum.SERVER_SYSERR);
+        }
+    }
+
+    @RequestMapping("editBlog")
+    public void editBlog(HttpServletResponse response,String title,String content,@RequestParam(required = false,defaultValue = "0") int type,int id){
+        try {
+            blogService.editBlog(title,content,type,id);
+            ResponseUtil.renderSuccessTipJson(response,"编辑成功");
+        } catch (ServerBizException e){
+            ResponseUtil.renderFailJson(response, e.getErrCode());
         } catch (Exception e) {
             ResponseUtil.renderFailJson(response, ErrorCodeEnum.SERVER_SYSERR);
         }
