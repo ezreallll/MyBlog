@@ -150,9 +150,14 @@
                 id:id
             },
             success:function (result) {
-                $("#title").val(result.data.title);
-                $(":radio[name='blogType'][value='" + result.data.type + "']").prop("checked", "checked");
-                $("#editWrap").append(result.data.content)
+                if(result.status==1) {
+                    $("#title").val(result.data.title);
+                    $(":radio[name='blogType'][value='" + result.data.type + "']").prop("checked", "checked");
+                    $("#editWrap").empty();
+                    $("#editWrap").append(result.data.content)
+                }else {
+                    layer.msg(result.msg);
+                }
             }
         })
     }
