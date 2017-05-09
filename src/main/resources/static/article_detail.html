@@ -22,8 +22,8 @@
             min-height: 100%;
         }
         .content_wrap{
-            width: 50%;
-            padding: 10px;
+            width: 55%;
+            padding: 20px;
             margin: 0px auto;
             background: #ffffff;
             min-height: 100%;
@@ -42,12 +42,29 @@
             text-align: center;
             cursor: pointer;
         }
+        .header{
+            width: 100%;
+            height: 70px;
+            background: url("img/header_bg.jpg");
+            background-size:100%;
+            padding-top: 20px;
+            padding-left: 30px;
+        }
+        .header a{
+            color: #78a355;
+            cursor: pointer;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
 <div class="wrap">
+    <div class="header">
+        <a href="index.html">首页</a>
+    </div>
     <div class="content_wrap">
         <h3 id="title"></h3>
+        <hr>
         <p id="create_time" style="color:#777;"></p>
 
         <div id="content">
