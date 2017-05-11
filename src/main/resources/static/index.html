@@ -47,11 +47,11 @@
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-3" style="padding-top: 30px;">
-				<div class="row">
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>分类</strong></li>
+                <div class="navbox">
+                    <ul class="nav">
                     </ul>
-				</div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -124,7 +124,7 @@
             dataType: 'json',
             success:function (result) {
                $.each(result.data,function (index,item) {
-                   $(".list-group").append('<li class="list-group-item"  onclick="chooseType('+item.id+')">'+item.remark+'</li>')
+                   $(".nav").append('<li onclick="chooseType('+item.id+')"><a>'+item.remark+'('+item.count+')'+'</a></li>')
                })
             }
         })

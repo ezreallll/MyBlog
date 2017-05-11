@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.hp.blog.entity.BlogTypeDto">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="count" property="count" />
     </resultMap>
     <sql id="Base_Column_List">
     id, remark
@@ -11,9 +12,8 @@
 
 
     <select id="selectTypeList"  resultMap="BaseResultMap" >
-        select
-        <include refid="Base_Column_List"/>
-        from blog_type
+        select blog_type.id, blog_type.remark ,count(blog.id) as count
+        from blog_type LEFT JOIN blog on blog.type = blog_type.id GROUP BY blog_type.id
     </select>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
